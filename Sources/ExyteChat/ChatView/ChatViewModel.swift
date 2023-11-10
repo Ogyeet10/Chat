@@ -7,36 +7,33 @@ import Combine
 
 public typealias ChatPaginationClosure = (Message) -> Void
 
-final class ChatViewModel: ObservableObject {
+public final class ChatViewModel: ObservableObject {
     
-    @Published private(set) var fullscreenAttachmentItem: Optional<Attachment> = nil
-    @Published var fullscreenAttachmentPresented = false
+    @Published public private(set) var fullscreenAttachmentItem: Optional<Attachment> = nil
+    @Published public var fullscreenAttachmentPresented = false
     
     @Published var messageMenuRow: MessageRow?
     
     public var didSendMessage: (DraftMessage) -> Void = {_ in}
     
-    let textDidChangePublisher = PassthroughSubject<String, Never>()
+    public let textDidChangePublisher = PassthroughSubject<String, Never>()
     
     // Call this method whenever the text changes.
-    func textDidChange(_ newText: String) {
+    public func textDidChange(_ newText: String) {
         textDidChangePublisher.send(newText)
     }
     
-    func presentAttachmentFullScreen(_ attachment: Attachment) {
+    public func presentAttachmentFullScreen(_ attachment: Attachment) {
         fullscreenAttachmentItem = attachment
         fullscreenAttachmentPresented = true
     }
     
-    
-    
-    
-    func dismissAttachmentFullScreen() {
+    public func dismissAttachmentFullScreen() {
         fullscreenAttachmentPresented = false
         fullscreenAttachmentItem = nil
     }
     
-    func sendMessage(_ message: DraftMessage) {
+    public func sendMessage(_ message: DraftMessage) {
         didSendMessage(message)
     }
 }

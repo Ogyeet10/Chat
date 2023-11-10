@@ -12,6 +12,11 @@ import ExyteMediaPicker
 
 public typealias MediaPickerParameters = SelectionParamsHolder
 
+// In your package
+public protocol ChatViewDelegate: AnyObject {
+    func textDidChange(to newText: String)
+}
+
 public struct ChatView<MessageContent: View, InputViewContent: View>: View {
 
     /// To build a custom message view use the following parameters passed by this closure:
@@ -36,6 +41,7 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
     @Environment(\.safeAreaInsets) private var safeAreaInsets
     @Environment(\.chatTheme) private var theme
     @Environment(\.mediaPickerTheme) private var pickerTheme
+    public weak var delegate: ChatViewDelegate?
 
     // MARK: - Parameters
 
@@ -127,6 +133,9 @@ public struct ChatView<MessageContent: View, InputViewContent: View>: View {
                         style: .message,
                         messageUseMarkdown: messageUseMarkdown
                     )
+                    .onChange(of: inputViewModel.attachments.text) { newText in
+                        viewModel.textDidChange(newText)
+                    }
                 }
             }
             .environmentObject(globalFocusState)

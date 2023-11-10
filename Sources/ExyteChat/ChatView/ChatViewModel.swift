@@ -11,21 +11,31 @@ final class ChatViewModel: ObservableObject {
     
     @Published private(set) var fullscreenAttachmentItem: Optional<Attachment> = nil
     @Published var fullscreenAttachmentPresented = false
-
+    
     @Published var messageMenuRow: MessageRow?
-
+    
     public var didSendMessage: (DraftMessage) -> Void = {_ in}
+    
+    let textDidChangePublisher = PassthroughSubject<String, Never>()
+    
+    // Call this method whenever the text changes.
+    func textDidChange(_ newText: String) {
+        textDidChangePublisher.send(newText)
+    }
     
     func presentAttachmentFullScreen(_ attachment: Attachment) {
         fullscreenAttachmentItem = attachment
         fullscreenAttachmentPresented = true
     }
     
+    
+    
+    
     func dismissAttachmentFullScreen() {
         fullscreenAttachmentPresented = false
         fullscreenAttachmentItem = nil
     }
-
+    
     func sendMessage(_ message: DraftMessage) {
         didSendMessage(message)
     }

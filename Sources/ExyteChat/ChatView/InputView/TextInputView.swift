@@ -26,8 +26,5 @@ struct TextInputView: View {
             .onTapGesture {
                 globalFocusState.focus = .uuid(inputFieldId)
             }
-            .onChange(of: text) { newText in
-                onTextChange(newText) // Call the closure when text changes
-            }
     }
 }
